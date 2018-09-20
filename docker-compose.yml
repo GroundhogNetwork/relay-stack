@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+
+  redis:
+    image: redis:4-alpine
+    ports:
+      - "6379:6379"
+
+  ganache:
+    build:
+      context: .
+      dockerfile: docker/ganache/Dockerfile
+    ports:
+      - "8545:8545"
+      
+  db:
+    image: postgres:10-alpine
+    ports:
+      - "5432:5432"
+
+networks:
+  default:
+    external:
+      name: safe-relay
