@@ -14,6 +14,7 @@ function up {
     echo "Start up relay service"
     docker-compose -f safe-relay-service/docker-compose.yml up -d
     echo "Start up transaction history service"
+    sleep 5
     docker-compose -f safe-transaction-history/docker-compose.yml up -d
 }
 
@@ -36,6 +37,26 @@ function clean_dbs {
     docker run -it -v $(pwd):/scripts --rm --network safe-relay --link safe-stack_db_1 postgres:10-alpine psql -h db -U postgres -f "/scripts/create_dbs.sql"
     down
     up
+    down
+    up
+}
+
+function init {
+    down
+    echo "Start up redis & databases"
+    docker network rm safe-relay
+    docker network create safe-relay
+    docker-compose -f docker-compose.yml up -d
+    sleep 5
+    docker run -it -v $(pwd):/scripts --rm --network safe-relay --link safe-stack_db_1 postgres:10-alpine psql -h db -U postgres -f "/scripts/remove_dbs.sql"
+    docker run -it -v $(pwd):/scripts --rm --network safe-relay --link safe-stack_db_1 postgres:10-alpine psql -h db -U postgres -f "/scripts/create_dbs.sql"
+    docker-compose -f docker-compose.yml down --remove-orphans
+    echo "Generating db Tables..."
+    up
+    sleep 5
+    echo "Cycling Stack..."
+    down
+    echo "Start Stack with: ./run-stack.sh up"
 }
 
 $@
