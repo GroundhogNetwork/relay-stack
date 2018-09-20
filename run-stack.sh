@@ -31,4 +31,11 @@ function status {
     docker-compose -f docker-compose.yml ps
 }
 
+function clean_dbs {
+    docker run -it -v $(pwd):/scripts --rm --network safe-relay --link safe-stack_db_1 postgres:10-alpine psql -h db -U postgres -f "/scripts/remove_dbs.sql"
+    docker run -it -v $(pwd):/scripts --rm --network safe-relay --link safe-stack_db_1 postgres:10-alpine psql -h db -U postgres -f "/scripts/create_dbs.sql"
+    down
+    up
+}
+
 $@
