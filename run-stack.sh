@@ -30,9 +30,9 @@ function status {
     docker-compose -f safe-notification-service/docker-compose.yml ps
     docker-compose -f safe-relay-service/docker-compose.yml ps
     docker-compose -f docker-compose.yml ps
-    echo "Transaction-History service: http://localhost:$(docker port safe-transaction-history_nginx_1 | cut -d ':' -f2)"
-    echo "Notification service: http://localhost:$(docker port safe-notification-service_nginx_1 | cut -d ':' -f2)"
-    echo "Relay service: http://localhost:$(docker port safe-relay-service_nginx_1 | cut -d ':' -f2)"
+    echo "Transaction-History service: http://localhost:$(docker port safe-transaction-history_web_1 | grep 27017 | cut -d ':' -f2)"
+    echo "Notification service: http://localhost:$(docker port safe-notification-service_web_1 | grep 27017 | cut -d ':' -f2)"
+    echo "Relay service: http://localhost:$(docker port safe-relay-service_web_1 | grep 27017 | cut -d ':' -f2)"
 }
 
 function clean_dbs {

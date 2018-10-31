@@ -4,16 +4,6 @@ volumes:
   nginx-relay:
 
 services:
-  nginx:
-    image: nginx:1.13-alpine
-    hostname: nginx
-    ports:
-      - "8000"
-    volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
-      - nginx-relay:/nginx
-    depends_on:
-      - web
   web:
     build:
       context: .
@@ -22,8 +12,10 @@ services:
       - .env
     working_dir: /app
     ports:
-      - "27017"
+      - 5678:5678
+      - 8081:27017
     volumes:
+      - .:/app
       - nginx-relay:/nginx
     command: docker/web/run_web.sh
 

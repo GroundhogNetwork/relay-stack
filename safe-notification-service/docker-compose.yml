@@ -4,16 +4,6 @@ volumes:
   nginx-notify:
 
 services:
-  nginx:
-    image: nginx:1.13-alpine
-    hostname: nginx
-    ports:
-      - "8000"
-    volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
-      - nginx-notify:/nginx
-    depends_on:
-      - web
   web:
     build:
       context: .
@@ -22,8 +12,10 @@ services:
       - .env
     working_dir: /app
     ports:
-      - "27017"
+      - 5679:5678
+      - 8082:27017
     volumes:
+      - .:/app
       - nginx-notify:/nginx
     command: docker/web/run_web.sh
 
