@@ -10,29 +10,24 @@ function up {
     echo "Start up redis & databases"
     docker-compose -f docker-compose.yml up -d
     echo "Start up notification service"
-    docker-compose -f safe-notification-service/docker-compose.yml up -d
-    echo "Start up relay service"
-    docker-compose -f safe-relay-service/docker-compose.yml up -d
-    echo "Start up transaction history service"
-    sleep 5
-    docker-compose -f safe-transaction-history/docker-compose.yml up -d
+    docker-compose -f safe-notification.yml -f safe-relay.yml -f safe-transaction.yml up -d
+    #echo "Start up relay service"
+    #docker-compose -f safe-relay.yml up -d
+    #echo "Start up transaction history service"
+    #sleep 5
+    #docker-compose -f safe-transaction.yml up -d
 }
 
 function down {
-    docker-compose -f safe-transaction-history/docker-compose.yml down --remove-orphans
-    docker-compose -f safe-notification-service/docker-compose.yml down --remove-orphans
-    docker-compose -f safe-relay-service/docker-compose.yml down --remove-orphans
+    docker-compose -f safe-transaction.yml -f safe-notification.yml -f safe-relay.yml down --remove-orphans
     docker-compose -f docker-compose.yml down --remove-orphans
 }
 
 function status {
-    docker-compose -f safe-transaction-history/docker-compose.yml ps
-    docker-compose -f safe-notification-service/docker-compose.yml ps
-    docker-compose -f safe-relay-service/docker-compose.yml ps
-    docker-compose -f docker-compose.yml ps
-    echo "Transaction-History service: http://localhost:$(docker port safe-transaction-history_web_1 | grep 27017 | cut -d ':' -f2)"
-    echo "Notification service: http://localhost:$(docker port safe-notification-service_web_1 | grep 27017 | cut -d ':' -f2)"
-    echo "Relay service: http://localhost:$(docker port safe-relay-service_web_1 | grep 27017 | cut -d ':' -f2)"
+    docker-compose -f safe-transaction.yml -f safe-notification.yml -f safe-relay.yml -f docker-compose.yml ps
+    echo "Transaction-History service: http://localhost:$(docker port safe-stack_web-transaction_1 | grep 27017 | cut -d ':' -f2)"
+    echo "Notification service: http://localhost:$(docker port safe-stack_web-notification_1 | grep 27017 | cut -d ':' -f2)"
+    echo "Relay service: http://localhost:$(docker port safe-stack_web-relay_1 | grep 27017 | cut -d ':' -f2)"
 }
 
 function clean_dbs {

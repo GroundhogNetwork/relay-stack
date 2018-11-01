@@ -1,0 +1,39 @@
+version: '3.5'
+
+volumes:
+  nginx-trans:
+
+services:
+  web-transaction:
+    build:
+      context: safe-transaction-history/
+      dockerfile: docker/web/Dockerfile
+    env_file:
+      - safe-transaction-history/.env
+      - .env
+    working_dir: /app
+    ports:
+      - 5680:5678
+      - 8083:27017
+    volumes:
+      - ./safe-transaction-history:/app
+      - nginx-trans:/nginx
+    command: docker/web/run_web.sh
+
+  worker-transaction: &worker
+    build:
+      context: safe-transaction-history/
+      dockerfile: docker/web/Dockerfile
+    env_file:
+      - safe-transaction-history/.env
+      - .env
+    command: docker/web/celery/worker/run.sh
+
+  scheduler-transaction:
+    <<: *worker
+    command: docker/web/celery/scheduler/run.sh
+
+networks:
+  default:
+    external:
+      name: safe-relay
