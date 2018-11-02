@@ -12,7 +12,7 @@
       "host": "localhost",
       "pathMappings": [
         {
-            "localRoot": "./safe-relay-service",   // Local root  (where source and debugger running)
+            "localRoot": "/Users/jbarnett/Documents/repos/safe-stack/safe-relay-service",   // Local root  (where source and debugger running)
             "remoteRoot": "/app"   // Remote root (where remote code is running)
         }
       ]
