@@ -1,0 +1,13 @@
+connections:
+  default:
+    url: redis://127.0.0.1:6379/0
+    db: 0
+  relay:
+    url: redis://127.0.0.1:6379/0
+    db: 4
+  notify:
+    url: redis://127.0.0.1:6379/0
+    db: 8
+  transaction:
+    url: redis://127.0.0.1:6379/0
+    db: 6

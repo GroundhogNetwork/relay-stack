@@ -18,6 +18,19 @@
       ]
     },
     {
+      "name": "Python: gnosis-safe",
+      "type": "python",
+      "request": "attach",
+      "port": 5678,
+      "host": "localhost",
+      "pathMappings": [
+        {
+            "localRoot": "/Users/jbarnett/Documents/repos/safe-stack/safe-relay-service/gnosis-py/gnosis/safe",   // Local root  (where source and debugger running)
+            "remoteRoot": "/usr/local/lib/python3.6/site-packages/gnosis/safe"   // Remote root (where remote code is running)
+        }
+      ]
+    },
+    {
       "name": "Python: Notify",
       "type": "python",
       "request": "attach",
