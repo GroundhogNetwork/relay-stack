@@ -23,13 +23,15 @@ function relay {
     fi    
 }
 
-function stack-down {
-    docker-compose -f safe-transaction.yml -f safe-notification.yml -f safe-relay.yml -p safe-stack down
-}
-
 function base {
     if [ "$1" == "up" ];
     then
+        echo "check networks"
+        netcheck=$(docker network ls -f 'name=safe-stack' -q)
+        if [ -z $netcheck ]; then
+            echo "creating network"
+            docker network create safe-stack
+        fi
         echo "Start up redis & databases"
         docker-compose -f docker-compose.yml -p safe-base up -d
     elif [ "$1" == 'down' ]; 
@@ -66,7 +68,15 @@ function init {
         echo "Grabbing Relay Code"
         rm -rf safe-relay-service
         git clone --single-branch -b develop https://github.com/gnosis/safe-relay-service.git
-        cat docker/add-network.yaml >> safe-relay-service/docker-compose.yml 
+        cat docker/add-network.yaml >> safe-relay-service/docker-compose.yml
+        # Fix swagger
+        sed -i "" -e $'/validators=/a\\\n'"\    url='http://localhost:8000'," safe-relay-service/config/urls.py
+        # Build Tookentwo
+        cd TookenTwo-StarringLiamNeesans
+        rm -rf node_modules
+        npm install
+        cd ..
+        docker-compose build --no-cache
     elif [ "$1" == "--update" ];
     then
         if [ ! -d safe-relay-service ]; then
@@ -93,8 +103,13 @@ function swagger {
 }
 
 function stack-restart {
-    stack-down
-    stack-up
+    base restart
+    relay restart
+}
+
+function up {
+    base up
+    relay up
 }
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
