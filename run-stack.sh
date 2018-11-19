@@ -75,6 +75,7 @@ function init {
         cd TookenTwo-StarringLiamNeesans
         rm -rf node_modules
         npm install
+        npm install
         cd ..
         docker-compose build --no-cache
     elif [ "$1" == "--update" ];
