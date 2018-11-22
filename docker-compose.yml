@@ -8,6 +8,7 @@ services:
       - "6379:6379"
 
   ganache:
+    image: safe-ganache
     build:
       context: .
       dockerfile: docker/ganache/Dockerfile
@@ -17,13 +18,21 @@ services:
   db:
     image: postgres:10-alpine
     ports:
-      - "5432"
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+  
+  tooken-two:
+    build:
+      context: TookenTwo-StarringLiamNeesans
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    command: [ "node", "/app/backend.js" ]
 
 networks:
   default:
     external:
-      name: safe-relay
+      name: safe-stack
 volumes:
   postgres-data:

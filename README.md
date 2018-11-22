@@ -6,17 +6,18 @@ Dev Stack for Groundhog
 
 * A computer running macOS.
 * Latest version of Docker
+* Latest version of git
 
 ## How to run the project
 
 1. Clone the GitHub repository to your machine.
 
-2. Run `./run-stack.sh init`
+2. Run `./run-stack.sh init -c`
 
 3. Run `./run-stack.sh up`
 
-4. Check the status of the services with `./run-stack.sh status`
+## For Local Debugging
 
-5. Open the swagger GUIs with `./run-stack.sh open`
+2. Run `./run-stack.sh init -cd`
 
-6. Clean the databases with `./run-stack.sh clean_dbs`
+3. Run `./run-stack.sh up debug`
