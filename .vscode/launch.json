@@ -25,8 +25,8 @@
       "host": "localhost",
       "pathMappings": [
         {
-            "localRoot": "/Users/jbarnett/Documents/repos/safe-stack/safe-relay-service/gnosis-py/gnosis/safe",   // Local root  (where source and debugger running)
-            "remoteRoot": "/usr/local/lib/python3.6/site-packages/gnosis/safe"   // Remote root (where remote code is running)
+            "localRoot": "/Users/jbarnett/Documents/repos/safe-stack/safe-relay-service/gnosis_package",   // Local root  (where source and debugger running)
+            "remoteRoot": "/usr/local/lib/python3.6/site-packages/gnosis"   // Remote root (where remote code is running)
         }
       ]
     },
